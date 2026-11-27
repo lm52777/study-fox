@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#d95926">
+<title>伴学小狐 · 儿童学习陪伴</title>
+<meta name="description" content="伴学小狐:会背古诗、出算数题、讲成语故事和笑话的儿童学习陪伴伙伴,纯网页免费使用。">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦊</text></svg>">
+</head>
+<body>
+<div id="app">
+  <header class="topbar">
+    <div class="brand">🦊 伴学小狐</div>
+    <div class="star-badge">⭐ <span id="star-count">0</span></div>
+  </header>
+
+  <main>
+    <!-- 首页 -->
+    <section class="screen" id="s-home">
+      <div class="fox-wrap">
+        <div class="fox" id="fox-home">🦊</div>
+        <div class="fox-shadow"></div>
+      </div>
+      <div class="card greeting" id="greeting-card"></div>
+      <div class="chip-row" id="home-chips"></div>
+    </section>
+
+    <!-- 学习 -->
+    <section class="screen" id="s-learn">
+      <h2>今天学点什么呀?</h2>
+      <div class="module-grid">
+        <button class="module-card" data-go="poems"><span class="m-emoji">📜</span><span class="m-name">古诗</span><span class="m-desc">读诗 · 背诵 · 小测验</span></button>
+        <button class="module-card" data-go="math"><span class="m-emoji">🧮</span><span class="m-name">口算闯关</span><span class="m-desc">10 题一轮 · 挣星星</span></button>
+        <button class="module-card" data-go="words"><span class="m-emoji">🀄</span><span class="m-name">识字卡</span><span class="m-desc">拼音 · 组词 · 例句</span></button>
+        <button class="module-card" data-go="idioms"><span class="m-emoji">📖</span><span class="m-name">成语故事</span><span class="m-desc">听故事 · 懂道理</span></button>
+      </div>
+      <div class="card eye-card">
+        <div>👀 护眼小卫士</div>
+        <div id="eye-countdown">--:--</div>
+      </div>
+    </section>
+
+    <!-- 聊天 -->
+    <section class="screen" id="s-chat">
+      <div class="chat-head">
+        <div class="fox fox-small" id="fox-chat">🦊</div>
+        <div class="chat-head-txt">
+          <div class="chat-title">和小狐聊天</div>
+          <div class="chat-sub">打字,或者按 🎤 说话</div>
+        </div>
+        <button class="icon-btn" id="voice-toggle" title="朗读开关">🔊</button>
+      </div>
+      <div class="chat-log" id="chat-log"></div>
+      <div class="chip-row" id="chat-chips"></div>
+      <div class="chat-input-row">
+        <button class="icon-btn" id="mic-btn" title="语音输入">🎤</button>
+        <input id="chat-input" placeholder="和小狐说点什么…" autocomplete="off">
+        <button class="send-btn" id="chat-send">发送</button>
+      </div>
+    </section>
+
+    <!-- 我的 -->
+    <section class="screen" id="s-me">
+      <div class="card me-row"><span>我的名字</span><input id="name-input" class="me-input" maxlength="10"></div>
+      <div class="card">
+        <div class="me-title">学习足迹</div>
+        <div class="stats-grid" id="stats-grid"></div>
+      </div>
+      <div class="card">
+        <div class="me-title">我的贴纸(星星换的)</div>
+        <div class="sticker-grid" id="sticker-grid"></div>
+      </div>
+      <div class="card">
+        <div class="me-title">朗读语速 <span id="tts-rate-val">1.0x</span></div>
+        <input type="range" id="tts-rate" min="0.8" max="1.3" step="0.1" value="1">
+      </div>
+      <div class="card">
+        <div class="me-title">护眼计时</div>
+        <div class="eye-big" id="eye-countdown-me">--:--</div>
+        <button class="btn" id="eye-reset">重新计时</button>
+      </div>
+      <button class="btn btn-ghost" id="clear-data">清空数据重新开始</button>
+    </section>
+
+    <!-- 古诗列表 -->
+    <section class="screen" id="s-poems">
+      <div class="sub-head"><button class="back-btn" data-back="learn">←</button><h2>古诗</h2></div>
+      <div id="poem-list"></div>
+    </section>
+
+    <!-- 古诗详情 -->
+    <section class="screen" id="s-poem">
+      <div class="sub-head"><button class="back-btn" data-back="poems">←</button><h2 id="poem-title"></h2></div>
+      <div class="card poem-card">
+        <div class="poem-author" id="poem-author"></div>
+        <div id="poem-lines"></div>
+        <div class="btn-row">
+          <button class="btn" id="poem-speak">🔊 朗读全诗</button>
+          <button class="btn" id="poem-yi">📖 译文</button>
+          <button class="btn" id="poem-zs">💡 小知识</button>
+          <button class="btn btn-quiz" id="poem-quiz">🎯 小测验</button>
+        </div>
+        <div class="extra hidden" id="poem-yi-box"></div>
+        <div class="extra hidden" id="poem-zs-box"></div>
+      </div>
+    </section>
+
+    <!-- 口算 -->
+    <section class="screen" id="s-math">
+      <div class="sub-head"><button class="back-btn" data-back="learn">←</button><h2>口算闯关</h2></div>
+      <div id="math-body"></div>
+    </section>
+
+    <!-- 识字 -->
+    <section class="screen" id="s-words">
+      <div class="sub-head"><button class="back-btn" data-back="learn">←</button><h2>识字卡</h2><div class="sub-tip">点卡片翻面</div></div>
+      <div class="word-grid" id="word-grid"></div>
+    </section>
+
+    <!-- 成语列表 -->
+    <section class="screen" id="s-idioms">
+      <div class="sub-head"><button class="back-btn" data-back="learn">←</button><h2>成语故事</h2></div>
+      <div id="idiom-list"></div>
+    </section>
+
+    <!-- 成语详情 -->
+    <section class="screen" id="s-idiom">
+      <div class="sub-head"><button class="back-btn" data-back="idioms">←</button><h2 id="idiom-name"></h2></div>
+      <div class="card idiom-card">
+        <div class="idiom-emoji" id="idiom-emoji"></div>
+        <div id="idiom-story"></div>
+        <div class="idiom-yiyi" id="idiom-yiyi"></div>
+        <button class="btn" id="idiom-speak">🔊 听故事</button>
+      </div>
+    </section>
+  </main>
+
+  <nav class="tabbar">
+    <button class="tab active" data-go="home"><span class="t-emoji">🏠</span>首页</button>
+    <button class="tab" data-go="learn"><span class="t-emoji">📚</span>学习</button>
+    <button class="tab" data-go="chat"><span class="t-emoji">💬</span>聊天</button>
+    <button class="tab" data-go="me"><span class="t-emoji">⭐</span>我的</button>
+  </nav>
+</div>
+
+<div id="toast"></div>
+
+<div id="quiz-overlay" class="overlay hidden">
+  <div class="modal card">
+    <div class="modal-title" id="quiz-q"></div>
+    <div class="quiz-opts" id="quiz-opts"></div>
+  </div>
+</div>
+
+<div id="eye-overlay" class="overlay hidden">
+  <div class="modal card center">
+    <div class="eye-fox">🦊💤</div>
+    <div class="modal-title">休息一下眼睛吧!</div>
+    <p class="muted">看看远处的绿色,或者闭上眼睛数 20 个数~</p>
+    <button class="btn" id="eye-done">我休息好啦,继续学习</button>
+  </div>
+</div>
+
+<div id="confetti"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
